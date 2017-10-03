@@ -169,12 +169,9 @@ function move(character, collidableMeshList, step, direction) {
 			return;
 		}
 	}		
-	if(direction == 0)
-		character.position.x += step;
-	else if(direction == 1)
+	if(direction%2)
 		character.position.y += step;
-	else if(direction == 2)
-		character.position.x -= step;
-	else if(direction == 3)
-		character.position.y -= step;
+	else
+		character.position.x += step;
+	
 }

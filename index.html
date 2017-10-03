@@ -32,7 +32,7 @@
 			var character = genCharacter(scene);
 			var darknessFilter = genDarknessFilter(scene, 1);
 			var movementSpeed = 5;
-			var characterAccel = 0.01;
+			var characterAccel = -0.01;
 			var characterVelo = 0;
 
 			var torchDirection = 0;
@@ -50,11 +50,11 @@
 			    	torchDirection = 1.5*Math.PI;
 			    }
 			    if(map[39]){
-			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 2);
+			    	e.preventDefault(); move(character, collidableMeshList, -movementSpeed, 2);
 			    	torchDirection = Math.PI;
 			    }
 			    if(map[40]){
-			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 3);
+			    	e.preventDefault(); move(character, collidableMeshList, -movementSpeed, 3);
 			    	torchDirection = 0.5*Math.PI;
 			    }
 
@@ -102,7 +102,7 @@
 					isInWater = true;
 				}
 				else{
-					characterVelo += .05;
+					characterVelo += -.05;
 					if(isInWater){
 						
 					}
