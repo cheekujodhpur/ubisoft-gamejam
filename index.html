@@ -30,6 +30,7 @@
 			collidableMeshList = collidableMeshList.concat(genFloor(scene));
 			var water = genWater(scene);
 			var character = genCharacter(scene);
+			var darknessFilter = genDarknessFilter(scene);
 			var movementSpeed = 5;
 			var characterAccel = 0.01;
 			var characterVelo = 0;
@@ -119,6 +120,11 @@
 				
 				if(collision) lockCharLeft = 0;
 				else lockCharLeft = 1;*/
+
+				darknessFilter.position.x = character.position.x;
+				darknessFilter.position.y = character.position.y;
+				/*darknessFilter[1].position.x = character.position.x;
+				darknessFilter[1].position.y = character.position.y;*/
 
 				renderer.render(scene, camera);
 			};

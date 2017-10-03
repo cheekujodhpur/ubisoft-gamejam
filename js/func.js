@@ -63,6 +63,51 @@ function inWater(character, water){
 	return collision;
 }
 
+function genDarknessFilter(scene) {
+
+	var filter = new THREE.Shape();
+	filter.moveTo( width / -1, height / -1  );
+    filter.lineTo( width / -1, height / 1 );
+    filter.lineTo( width / 1, height / 1 );
+    filter.lineTo( width / 1, height / -1 );
+    filter.lineTo( width / -1, height / -1 );
+
+    var visionHole = new THREE.Path();
+    var radius = 200;
+    visionHole.moveTo(radius, 0);
+    var step = 2*Math.PI / 100;
+    for(var i = 0;i<2*Math.PI;i+=step){
+        visionHole.lineTo(radius*Math.cos(i), radius*Math.sin(i));
+    }
+
+    /*var lightPatch = new THREE.Shape();
+    lightPatch.moveTo(radius, 0);
+    var step = 2*Math.PI / 100;
+    for(var i = step;i<=2*Math.PI;i+=step){
+        lightPatch.lineTo(radius*Math.cos(i), radius*Math.sin(i));
+    }*/
+
+    filter.holes.push( visionHole );
+
+    var extrusionSettings = {
+    amount: 20,
+    bevelEnabled: true,
+    bevelThickness: 0.5,
+    bevelSize: 0.5,
+    bevelSegments: 8,
+    material: 0,
+    extrudeMaterial: 1
+	};
+
+	var geometry = new THREE.ExtrudeGeometry( filter, extrusionSettings );
+	var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.995} );
+	var filterMesh = new THREE.Mesh( geometry, material );
+
+	scene.add( filterMesh );
+	filterMesh.position.z = 49;
+
+	return filterMesh;
+}
 
 function move(character, collidableMeshList, step, direction) {
 	for(var i = 0;i<collidableMeshList.length;i++){
