@@ -24,17 +24,64 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
+			collidableMeshList = [];
 			// Making bars
-			makeSideBars(scene);
+			collidableMeshList = collidableMeshList.concat(makeSideBars(scene));
+			collidableMeshList = collidableMeshList.concat(genFloor(scene));
+			var character = genCharacter(scene);
+			var movementSpeed = 5;
+			var characterAccel = 0.01;
+			var characterVelo = 0;
+
+
+			document.addEventListener("keydown", function(e){
+				switch(e.keyCode) {
+					// move(character, movementSpeed, collidableMeshList, 0);
+					case 37: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 0);  break;
+					case 38: e.preventDefault(); characterVelo = 0; move(character, collidableMeshList, movementSpeed, 1); break;
+					case 39: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 2); break;
+					case 40: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 3); break;
+				}
+			}, false);
+
 
 
 			//camera.position.z = 5;
+			var firstBB;
+			var secondBB;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
 
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
+				characterVelo += characterAccel;
+				move(character, collidableMeshList, characterVelo, 3); 
+
+				/*for(var i = 0;i<collidableMeshList.length;i++) {
+					firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
+					secondBB = new THREE.Box3().setFromObject(character);
+
+					var collision = firstBB.intersectsBox(secondBB);
+
+					if((firstBB.getCenter().x - secondBB.getCenter().x)>0) {
+						lockCharLeft[3] = true; //Locking left motion
+					}
+					if((firstBB.getCenter().x - secondBB.getCenter().x)<0) {
+						lockCharLeft[2] = true; //locking right motion
+					}
+					if((firstBB.getCenter().y - secondBB.getCenter().y)>0) {
+						lockCharLeft[0] = true; //Locking upward motion
+					}
+					if((firstBB.getCenter().y - secondBB.getCenter().y)<0) {
+						lockCharLeft[1] = true; //Locking downward motion
+					}
+				}
+				
+
+				
+				if(collision) lockCharLeft = 0;
+				else lockCharLeft = 1;*/
 
 				renderer.render(scene, camera);
 			};
