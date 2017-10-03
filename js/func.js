@@ -70,17 +70,21 @@ function move(character, collidableMeshList, step, direction) {
 		var	secondBB = new THREE.Box3().setFromObject(character);
 
 		var collision = firstBB.intersectsBox(secondBB);
+		// console.log(firstBB);
 
-		if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && collision && direction==0) {
+		var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+
+		if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
 			return;
 		}
-		if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && collision && direction==1) {
+		if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
 			return;
 		}
-		if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && collision && direction==2) {
+		if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
 			return;
 		}
-		if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && collision && direction==3) {
+		if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
 			return;
 		}
 	}		
