@@ -10,6 +10,7 @@
 	</head>
 	<body>
 		<script src="js/three.js"></script>
+		<script src="js/func.js"></script>
 		<script>
 			var scene = new THREE.Scene();
 			var width = window.innerWidth;
@@ -23,11 +24,9 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
-			//var geometry = new THREE.BoxGeometry( 0.5*width, 0.5*width, 0.5*width );
-			//var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			//var cube = new THREE.Mesh( geometry, material );
-			//scene.add( cube );
-			//cube.position.z = 50;
+			// Making bars
+			makeSideBars(scene);
+
 
 			//camera.position.z = 5;
 
