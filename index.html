@@ -35,21 +35,40 @@
 			var characterAccel = 0.01;
 			var characterVelo = 0;
 
+			var torchDirection = 0;
+
 			var map = {}; // You could also use an array
 			onkeydown = onkeyup = function(e){
 			    e = e || event; // to deal with IE
 			    map[e.keyCode] = e.type == 'keydown';
 			    if(map[37]){
 			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 0);
+			    	torchDirection = 0;
 			    }
 			    if(map[38]){
 			    	e.preventDefault(); if(isInWater){characterVelo = 0; move(character, collidableMeshList, movementSpeed, 1);}
+			    	torchDirection = 1.5*Math.PI;
 			    }
 			    if(map[39]){
 			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 2);
+			    	torchDirection = Math.PI;
 			    }
 			    if(map[40]){
 			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 3);
+			    	torchDirection = 0.5*Math.PI;
+			    }
+
+			    if(map[37] && map[38]){
+			    	torchDirection = 1.75*Math.PI;
+			    }
+			    if(map[38] && map[39]){
+			    	torchDirection = 1.25*Math.PI;
+			    }
+			    if(map[39] && map[40]){
+			    	torchDirection = 0.75*Math.PI;
+			    }
+			    if(map[40] && map[37]){
+			    	torchDirection = 0.25*Math.PI;
 			    }
 
 			}
@@ -122,7 +141,9 @@
 
 				darknessFilter.position.x = character.position.x;
 				darknessFilter.position.y = character.position.y;
-				darknessFilter.rotation.z += .01;
+				// console.log(torchDirection);
+
+				darknessFilter.rotation.z = 0.8*darknessFilter.rotation.z-0.2*torchDirection;
 
 				renderer.render(scene, camera);
 			};

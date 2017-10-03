@@ -1,0 +1,17 @@
+#infoBox {
+	height: 10em;
+	width: 40em;
+	display: none;
+	position: absolute;
+	background-color: grey;
+}
+.center {
+    margin: auto;
+    width: 60%;
+    border: 3px solid black;
+    padding: 10px;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
