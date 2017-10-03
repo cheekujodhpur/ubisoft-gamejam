@@ -34,15 +34,33 @@
 			var characterVelo = 0;
 
 
-			document.addEventListener("keydown", function(e){
+			var map = {}; // You could also use an array
+			onkeydown = onkeyup = function(e){
+			    e = e || event; // to deal with IE
+			    map[e.keyCode] = e.type == 'keydown';
+			    if(map[37]){
+			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 0);
+			    }
+			    if(map[38]){
+			    	e.preventDefault(); characterVelo = 0; move(character, collidableMeshList, movementSpeed, 1);
+			    }
+			    if(map[39]){
+			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 2);
+			    }
+			    if(map[40]){
+			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 3);
+			    }
+
+			}
+			/*document.addEventListener("keydown", function(e){
 				switch(e.keyCode) {
 					// move(character, movementSpeed, collidableMeshList, 0);
 					case 37: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 0);  break;
 					case 38: e.preventDefault(); characterVelo = 0; move(character, collidableMeshList, movementSpeed, 1); break;
 					case 39: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 2); break;
-					case 40: e.preventDefault(); move(character, collidableMeshList, movementSpeed, 3); break;
+					case 40:  break;
 				}
-			}, false);
+			}, false);*/
 
 
 
