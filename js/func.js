@@ -42,6 +42,27 @@ function genFloor(scene) {
 	return cube;
 }
 
+function genWater(scene){
+	var geometry = new THREE.BoxGeometry( width, height, 1 );
+	var material = new THREE.MeshBasicMaterial( { color: 0x0e113a , transparent: true, opacity:0.7} );
+	var cube = new THREE.Mesh( geometry, material );
+	scene.add( cube );
+	cube.position.z = 51;
+	cube.position.x = 0;
+	cube.position.y = 3*height / -4.;
+
+	return cube;	
+}
+
+function inWater(character, water){
+	var firstBB = new THREE.Box3().setFromObject(water);
+	var	secondBB = new THREE.Box3().setFromObject(character);
+
+	var collision = firstBB.intersectsBox(secondBB);
+
+	return collision;
+}
+
 
 function move(character, collidableMeshList, step, direction) {
 	for(var i = 0;i<collidableMeshList.length;i++){
