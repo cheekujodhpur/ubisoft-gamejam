@@ -28,9 +28,14 @@
 			// Making bars
 			collidableMeshList = collidableMeshList.concat(makeSideBars(scene));
 			collidableMeshList = collidableMeshList.concat(genFloor(scene));
+			var platform = genPlatform(scene);
+			collidableMeshList = collidableMeshList.concat(platform);
 			var water = genWater(scene);
 			var character = genCharacter(scene);
-			var darknessFilter = genDarknessFilter(scene, 1);
+			character.position.x = width/4;
+			character.position.y = height;
+			
+			var darknessFilter = genDarknessFilter(scene, 0);
 			var movementSpeed = 5;
 			var characterAccel = -0.01;
 			var characterVelo = 0;
@@ -54,7 +59,7 @@
 			    	torchDirection = Math.PI;
 			    }
 			    if(map[40]){
-			    	e.preventDefault(); move(character, collidableMeshList, -movementSpeed, 3);
+			    	e.preventDefault(); if(isInWater){move(character, collidableMeshList, -movementSpeed, 3);}
 			    	torchDirection = 0.5*Math.PI;
 			    }
 

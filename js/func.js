@@ -42,6 +42,17 @@ function genFloor(scene) {
 	return cube;
 }
 
+function genPlatform(scene) {
+	var geometry = new THREE.BoxGeometry( width/4, 10, 50 );
+	var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: false, opacity:0.5} );
+	var cube = new THREE.Mesh( geometry, material );
+	scene.add( cube );
+	cube.position.z = 50;
+	cube.position.x = width/4;
+	cube.position.y = 0 ;
+	//cube.rotation.z = (Math.PI)/4;
+	return cube;
+}
 function genWater(scene){
 	var geometry = new THREE.BoxGeometry( width, height, 1 );
 	var material = new THREE.MeshBasicMaterial( { color: 0x0e113a , transparent: true, opacity:0.7} );
@@ -56,6 +67,15 @@ function genWater(scene){
 
 function inWater(character, water){
 	var firstBB = new THREE.Box3().setFromObject(water);
+	var	secondBB = new THREE.Box3().setFromObject(character);
+
+	var collision = firstBB.intersectsBox(secondBB);
+
+	return collision;
+}
+
+function onPLatform(character, platform){
+	var firstBB = new THREE.Box3().setFromObject(platform);
 	var	secondBB = new THREE.Box3().setFromObject(character);
 
 	var collision = firstBB.intersectsBox(secondBB);
