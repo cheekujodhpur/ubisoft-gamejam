@@ -10,8 +10,8 @@
 		  <link rel="stylesheet" href="css/infoDialog.css">
 	</head>
 	<body>
-		<div style="position: fixed;top: 20px;width: 10em;height: 24px; background-color: grey; border: solid 2px yellow">
-  			<div id = "oxyBar" style="height:24px;width:100%; background-color: red;" data-value =100></div>
+		<div style="position: fixed;top: 20px; left:20px; width: 20em;height: 24px; background-color: #017275; border: solid 5px #1f2652; border-radius:5px;">
+  			<div id = "oxyBar" style="height:24px;width:100%; background: linear-gradient(to bottom, #00b0ad , #007075)" data-value =100></div>
 		</div>
 
 		<div id="infoBox" class="center">
@@ -40,13 +40,17 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
+			genBackground(scene, 1);
+
 			collidableMeshList = [];
 			// Making bars
-			collidableMeshList = collidableMeshList.concat(makeSideBars(scene));
 			var floor = genFloor(scene);
 			collidableMeshList = collidableMeshList.concat(floor);
-			var platform = genPlatform(scene);
-			collidableMeshList = collidableMeshList.concat(platform);
+
+			//get level Platforms
+			var platforms = genPlatforms(scene, 1);
+			
+			collidableMeshList = collidableMeshList.concat(platforms);
 			var water = genWater(scene);
 			var character = genCharacter(scene);
 			character.position.x = width/4;
@@ -82,8 +86,8 @@
 			    	e.preventDefault();
 			    	console.log('here');
 
-			    	if(onPlatform(character,platform)){ move(character, collidableMeshList,airMovementSpeed, 0);}
-			    	if (isInWater){ move(character, collidableMeshList, waterMovementSpeed, 0); }
+			    	if(isInWater){ move(character, collidableMeshList, waterMovementSpeed, 2); }
+			    	else{ move(character, collidableMeshList, airMovementSpeed, 2);}
 			    	torchDirection = 0;
 
 			    	if(idleL || idleR){
@@ -97,7 +101,7 @@
 			    }
 			    if(map[38]){
 			    	e.preventDefault(); 
-			    	if(onPlatform(character,platform) || onSurface(character,water)){ characterVelo = 5; }
+			    	if(onPlatform(character,platforms) || onSurface(character,water)){ characterVelo = 5; }
 			    	if(isInWater){ characterVelo =0;move(character, collidableMeshList, waterMovementSpeed, 1); }
 			    	if(!isInWater){move(character, collidableMeshList, airMovementSpeed, 1);}
 			    	torchDirection = 1.5*Math.PI;
@@ -105,6 +109,7 @@
 			    }
 			    if(map[39]){
 			    	e.preventDefault(); 
+
 			    	if(isInWater){ move(character, collidableMeshList, -waterMovementSpeed, 2); }
 			    	else{ move(character, collidableMeshList, -airMovementSpeed, 2);}
 			    	
@@ -198,6 +203,8 @@
 			var textureWalkL = loader.load('images/character_walkL.png' );
 			var textureWalkR = loader.load('images/character_walkR.png' );
 
+			var tex_lvl1 = loader.load('images/lvl1_bkg.png');
+
 			//character.material.setValues({map:textureIdle});
 
 			/* Level Variables */
@@ -207,8 +214,7 @@
 			
 			
 			var animate = function () {
-
-				var isOnPlatform=onPlatform(character,platform) || onPlatform(character,floor) ;
+				var isOnPlatform=onPlatform(character,platforms) || onPlatform(character,[floor]) ;
 				var isOnSurface = onSurface(character, water);
 				requestAnimationFrame( animate );
 				//cube.rotation.x += 0.1;
@@ -326,7 +332,7 @@
 					else if (levelState == 1){
 						document.getElementById('message').innerHTML = "Use &larr &rarr &uarr &darr keys to control the player. Press the i button for interactive screen. \n\nPress Enter to Play" ;
 					}
-				}
+				} 
 
 				/*Level 1 logic*/
 				else if(currentLevel == 1) {
