@@ -42,6 +42,50 @@ function genBackground(scene, level) {
 		scene.add( cube );
 		cube.position.z = 51;
 	}
+	level =2 ;
+	if(level==2) {
+		var geometry = new THREE.BoxGeometry( width, height, 1 );
+
+		var loader = new THREE.TextureLoader();
+		loader.setCrossOrigin("Anonymous");
+
+		var materials = [
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl2_bkg.png'),
+	           transparent:true
+	       })
+	    ];
+		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 50;
+		cube.position.x = 0;
+		cube.position.y = 0;
+
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 51;
+	}
 }
 
 function genPlatforms(scene, level) {
@@ -49,14 +93,59 @@ function genPlatforms(scene, level) {
 
 	platforms = [];
 	if(level==1){
-		geometry = new THREE.BoxGeometry( width/4.,20., 1 );
-		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.2 } );
-		var plat1 = new THREE.Mesh(geometry, material);
-		scene.add(plat1);
-		plat1.position.z = 45;
-		plat1.position.x = width/4.;
-		plat1.position.y = 0;
-		platforms.push(plat1);
+
+		
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0 } );
+		
+		geometry = new THREE.BoxGeometry( 325.,4., 1 );
+		var plat6 = new THREE.Mesh(geometry, material);
+		scene.add(plat6);
+		plat6.position.z = 45;
+		plat6.position.x = -440.;
+		plat6.position.y = 145;
+		platforms.push(plat6);
+
+		geometry = new THREE.BoxGeometry( 280.,4., 1 );
+		var plat7 = new THREE.Mesh(geometry, material);
+		scene.add(plat7);
+		plat7.position.z = 45;
+		plat7.position.x = 270.;
+		plat7.position.y = 150;
+		platforms.push(plat7);
+
+		geometry = new THREE.BoxGeometry( 70.,4., 1 );
+		var plat8 = new THREE.Mesh(geometry, material);
+		scene.add(plat8);
+		plat8.position.z = 45;
+		plat8.position.x = 245.;
+		plat8.position.y = 35;
+		platforms.push(plat8);
+
+		geometry = new THREE.BoxGeometry( 40.,4., 1 );
+		var plat9 = new THREE.Mesh(geometry, material);
+		scene.add(plat9);
+		plat9.position.z = 45;
+		plat9.position.x = 320.;
+		plat9.position.y = -100;
+		platforms.push(plat9);
+
+
+		geometry = new THREE.BoxGeometry( 130.,4., 1 );
+		var plat10 = new THREE.Mesh(geometry, material);
+		scene.add(plat10);
+		plat10.position.z = 45;
+		plat10.position.x = -450.;
+		plat10.position.y = 35;
+		platforms.push(plat10);
+
+		geometry = new THREE.BoxGeometry( 10.,4., 1 );
+		var plat11 = new THREE.Mesh(geometry, material);
+		scene.add(plat11);
+		plat11.position.z = 45;
+		plat11.position.x = -320.;
+		plat11.position.y = -60;
+		platforms.push(plat11);
+
 
 		geometry = new THREE.BoxGeometry( 20.,300, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5 } );
@@ -66,6 +155,34 @@ function genPlatforms(scene, level) {
 		plat2.position.x = 345;
 		plat2.position.y = 2.;
 		platforms.push(plat2);
+
+		geometry = new THREE.BoxGeometry( 1.,300, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
+		var plat3 = new THREE.Mesh(geometry, material);
+		scene.add(plat3);
+		plat3.position.z = 45;
+		plat3.position.x = 106;
+		plat3.position.y = 2.;
+		platforms.push(plat3);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat4 = new THREE.Mesh(geometry, material);
+		scene.add(plat4);
+		plat4.position.z = 45;
+		plat4.position.x = -309;
+		plat4.position.y = 2.;
+		platforms.push(plat4);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat5 = new THREE.Mesh(geometry, material);
+		scene.add(plat5);
+		plat5.position.z = 45;
+		plat5.position.x = -600;
+		plat5.position.y = 2.;
+		platforms.push(plat5);
+
 	}
 	return platforms;
 }
