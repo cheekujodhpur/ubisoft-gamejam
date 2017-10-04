@@ -42,6 +42,50 @@ function genBackground(scene, level) {
 		scene.add( cube );
 		cube.position.z = 51;
 	}
+	level = 2;
+	if(level==2) {
+		var geometry = new THREE.BoxGeometry( width, height, 1 );
+
+		var loader = new THREE.TextureLoader();
+		loader.setCrossOrigin("Anonymous");
+
+		var materials = [
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl2_bkg.png'),
+	           transparent:true
+	       })
+	    ];
+		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 50;
+		cube.position.x = 0;
+		cube.position.y = 0;
+
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 51;
+	}
 }
 
 function genPlatforms(scene, level) {
