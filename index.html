@@ -16,7 +16,7 @@
 
 		<div id="infoBox" class="center">
 			<center><h2 style="font-family: sans-serif;">Information</h2></center>
-			<p id="message"></p>
+			<center id="message" style="font-size: 20px; padding: 10px; opacity: 1.0;"></center>
 		</div>
 
 		<script src="js/three.js"></script>
@@ -290,9 +290,7 @@
 					}
 
 				}
-
-
-				/*Character Animation Logic */
+				
 				if(idle) character.material.setValues({color:0x00ff00});
 				else if(walkLeft) character.material.setValues({color:0xff0000});
 				else if(walkRight) character.material.setValues({color:0x0000ff});				
