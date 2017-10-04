@@ -42,7 +42,6 @@ function genBackground(scene, level) {
 		scene.add( cube );
 		cube.position.z = 51;
 	}
-	level =2 ;
 	if(level==2) {
 		var geometry = new THREE.BoxGeometry( width, height, 1 );
 
@@ -278,6 +277,57 @@ function inWater(character, water){
 	var collision = firstBB.intersectsBox(secondBB);
 
 	if (secondBB.max.y > firstBB.max.y) return 0;
+
+	return collision;
+}
+function genKey(scene){
+		var geometry = new THREE.BoxGeometry( 90, 50, 1 );
+
+		var loader = new THREE.TextureLoader();
+		loader.setCrossOrigin("Anonymous");
+
+		var materials = [
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_key.png'),
+	           transparent:true
+	       })
+	    ];
+	    console.log("here");
+		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 50;
+		cube.position.x = 500;
+		cube.position.y = -250;
+
+		return cube;
+}
+
+function hasKey(character, key){
+	var firstBB = new THREE.Box3().setFromObject(key);
+	var	secondBB = new THREE.Box3().setFromObject(character);
+
+	var collision = firstBB.intersectsBox(secondBB);
 
 	return collision;
 }
