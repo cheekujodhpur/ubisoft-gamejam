@@ -44,7 +44,7 @@ function genBackground(scene, level) {
 		cube.position.z = 51;
 	}
 	if(level==2) {
-		console.log("hereddd");
+		//console.log("hereddd");
 		var geometry = new THREE.BoxGeometry( width, height, 1 );
 
 		var loader = new THREE.TextureLoader();
@@ -321,7 +321,7 @@ function genKey(scene){
 		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
 		var cube = new THREE.Mesh( geometry, materials );
 		scene.add( cube );
-		cube.position.z = 50;
+		cube.position.z = 45;
 		cube.position.x = 500;
 		cube.position.y = -250;
 
@@ -333,8 +333,21 @@ function hasKey(character, key){
 	var	secondBB = new THREE.Box3().setFromObject(character);
 
 	var collision = firstBB.intersectsBox(secondBB);
+	console.log("Here"+collision);
 
 	return collision;
+}
+
+function collidesDoor(character){
+	var	secondBB = new THREE.Box3().setFromObject(character);
+
+	if(secondBB.min.x>(width/2)-100 && secondBB.min.y>height/-2+120 )
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 function onSurface(character, water){

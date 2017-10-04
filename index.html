@@ -41,7 +41,7 @@
 			document.body.appendChild( renderer.domElement );
 
 			genBackground(scene, 1);
-			var key = genKey(scene)
+			var key = genKey(scene);
 
 			collidableMeshList = [];
 			// Making bars
@@ -145,6 +145,107 @@
 			    }
 			    if(map[40] && map[37]){
 			    	torchDirection = 0.25*Math.PI;
+			    }
+			    if(map[73]){
+				    	/*Level 1 logic*/
+						if(currentLevel == 1) {
+							console.log("HEY");
+
+						if(levelState == 0) {
+							if(hasKey(character, key)){
+								levelState = 3;
+								console.log("levelState="+levelState);
+								document.getElementById("infoBox").style.display = "block";
+								document.getElementById("message").innerHTML = "You have collected a key.";
+							}
+							if(hasKey(character, key) && collidesDoor(character)){
+								document.getElementById("infoBox").style.display = "block";
+								document.getElementById("message").innerHTML = "Level Cleared.";
+								currentLevel = 2;
+							}
+						}
+
+						else if(levelState == 1){
+							if(hasKey(character, key)){
+								levelState = 3;
+							}
+							if(collidesDoor(character)){
+								//nothing, set apt info
+							}
+						}
+
+						else if(levelState == 2){
+							if(hasTorch()){
+								levelState = 3;
+							}
+							if(collidesDoor(character)){
+								levelState = 4;
+							}
+						}
+						else if(levelState == 3){
+							console.log("levelState="+levelState);
+							if(collidesDoor(character)){
+								document.getElementById("infoBox").style.display = "block";
+								document.getElementById("message").innerHTML = "Level Cleared.";
+								//currentLevel = 2;
+								levelState = 4;
+							}																
+						}
+						else if(levelState == 4){
+							//Clear DOM, show transition 
+							levelState = 0;
+							currentLevel = 2;
+							genBackground(scene, currentLevel);
+							platforms = genPlatforms(scene, currentLevel);
+							collidableMeshList = collidableMeshList.concat(platforms);
+						}
+					}
+					else if(currentLevel==2){
+						if(levelState == 0){
+							//Drive the player to the right water 
+							if(hasDolphin()){
+							levelState = 1; 
+								//Normal slow movement to left, fast to right
+							}
+							if(collidesDoor(character)()){
+								//Apt info
+							}
+						}
+						else if(levelState == 1){
+							if(collidesRock()){
+								//remove rock
+								levelState = 2;//key exposed
+							}
+							if(!hasDolphin()){
+								//Drive the guy to right
+							}
+						}
+						else if(levelState == 2){
+							if(hasKey(character, key)){
+								levelState = 3;
+							}
+							if(!hasDolphin()){
+								//Drive the guy to right
+							}
+						}
+						else if(levelState == 3){
+							if(!hasDolphin()){
+								//Drive the guy to right
+							}
+							if(collidesDoor(character)()){
+								levelState = 4;
+							}
+						}
+						else if(levelState == 4){
+							//Hide DOM Elements, new level./
+							currentLevel = 3 ;
+							levelState = 0;
+						}
+
+					}
+			    }
+			    if(map[27]){
+			    	document.getElementById("infoBox").style.display = "none";
 			    }
 
 
@@ -287,8 +388,6 @@
 				if(collision) lockCharLeft = 0;
 				else lockCharLeft = 1;*/
 
-				if(hasKey()){ alert("HAS KEY");}
-
 				if(!lightType && (idleL || walkRight))
 					darknessFilter[0].position.x = character.position.x-30;
 				else if(!lightType && (idleR || walkLeft))
@@ -356,100 +455,6 @@
 					}
 				} 
 
-				/*Level 1 logic*/
-				else if(currentLevel == 1) {
-					if(levelState == 0) {
-
-						if(hasTorch()){
-							levelState = 1;
-						}
-						if(hasKey()){
-							//prevent this from happening
-							//Give info like, can't pick coz can't see
-							levelState = 0;
-						}
-						if(hasKey() && hasTorch()){
-							levelState = 3;
-						}
-						if(collidesDoor()){
-							//nothing, set apt info
-						}
-					}
-
-					else if(levelState == 1){
-						if(hasKey()){
-							levelState = 3;
-						}
-						if(collidesDoor()){
-							//nothing, set apt info
-						}
-					}
-
-					else if(levelState == 2){
-						if(hasTorch()){
-							levelState = 3;
-						}
-						if(collidesDoor()){
-							levelState = 4;
-						}
-					}
-					else if(levelState == 3){
-						if(collidesDoor()){
-							levelState = 4;
-						}									
-					}
-					else if(levelState == 4){
-						//Clear DOM, show transition 
-						levelState = 0;
-						currentLevel = 2;
-						genBackground(scene, currentLevel);
-						platforms = genPlatforms(scene, currentLevel);
-						collidableMeshList = collidableMeshList.concat(platforms);
-					}
-				}
-				else if(currentLevel==2){
-					if(levelState == 0){
-						//Drive the player to the right water 
-						if(hasDolphin()){
-						levelState = 1; 
-							//Normal slow movement to left, fast to right
-						}
-						if(collidesDoor()){
-							//Apt info
-						}
-					}
-					else if(levelState == 1){
-						if(collidesRock()){
-							//remove rock
-							levelState = 2;//key exposed
-						}
-						if(!hasDolphin()){
-							//Drive the guy to right
-						}
-					}
-					else if(levelState == 2){
-						if(hasKey()){
-							levelState = 3;
-						}
-						if(!hasDolphin()){
-							//Drive the guy to right
-						}
-					}
-					else if(levelState == 3){
-						if(!hasDolphin()){
-							//Drive the guy to right
-						}
-						if(collidesDoor()){
-							levelState = 4;
-						}
-					}
-					else if(levelState == 4){
-						//Hide DOM Elements, new level./
-						currentLevel = 3 ;
-						levelState = 0;
-					}
-
-				}
 			};
 
 			animate();
