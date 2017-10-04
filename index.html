@@ -40,13 +40,17 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
+			genBackground(scene, 1);
+
 			collidableMeshList = [];
 			// Making bars
-			collidableMeshList = collidableMeshList.concat(makeSideBars(scene));
 			var floor = genFloor(scene);
 			collidableMeshList = collidableMeshList.concat(floor);
-			var platform = genPlatform(scene);
-			collidableMeshList = collidableMeshList.concat(platform);
+
+			//get level Platforms
+			var platforms = genPlatforms(scene, 1);
+			
+			collidableMeshList = collidableMeshList.concat(platforms);
 			var water = genWater(scene);
 			var character = genCharacter(scene);
 			character.position.x = width/4;
@@ -95,7 +99,7 @@
 			    }
 			    if(map[38]){
 			    	e.preventDefault(); 
-			    	if(onPlatform(character,platform) || onSurface(character,water)){ characterVelo = 5; }
+			    	if(onPlatform(character,platforms) || onSurface(character,water)){ characterVelo = 5; }
 			    	if(isInWater){ characterVelo =0;move(character, collidableMeshList, waterMovementSpeed, 1); }
 			    	if(!isInWater){move(character, collidableMeshList, airMovementSpeed, 1);}
 			    	torchDirection = 1.5*Math.PI;
@@ -183,6 +187,8 @@
 			var textureWalkL = loader.load('images/character_walkL.png' );
 			var textureWalkR = loader.load('images/character_walkR.png' );
 
+			var tex_lvl1 = loader.load('images/lvl1_bkg.png');
+
 			//character.material.setValues({map:textureIdle});
 
 			/* Level Variables */
@@ -190,7 +196,7 @@
 			var levelState = 0;
 
 			var animate = function () {
-				var isOnPlatform=onPlatform(character,platform) || onPlatform(character,floor) ;
+				var isOnPlatform=onPlatform(character,platforms) || onPlatform(character,[floor]) ;
 				var isOnSurface = onSurface(character, water);
 				requestAnimationFrame( animate );
 				//cube.rotation.x += 0.1;

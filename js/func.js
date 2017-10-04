@@ -1,3 +1,66 @@
+function genBackground(scene, level) {
+	if(level==1) {
+		var geometry = new THREE.BoxGeometry( width, height, 1 );
+
+		var loader = new THREE.TextureLoader();
+		loader.setCrossOrigin("Anonymous");
+
+		var materials = [
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/character_idleL.png'),
+	           transparent:true
+	       }),
+	       new THREE.MeshBasicMaterial({
+	           map: loader.load('images/lvl1_bkg.png'),
+	           transparent:true
+	       })
+	    ];
+		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 50;
+		cube.position.x = 0;
+		cube.position.y = 0;
+
+		var cube = new THREE.Mesh( geometry, materials );
+		scene.add( cube );
+		cube.position.z = 51;
+	}
+}
+
+function genPlatforms(scene, level) {
+	var geometry, material;
+
+	platforms = [];
+	if(level==1){
+		geometry = new THREE.BoxGeometry( width/4.,20., 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.2 } );
+		var plat1 = new THREE.Mesh(geometry, material);
+		scene.add(plat1);
+		plat1.position.z = 45;
+		plat1.position.x = width/4.;
+		plat1.position.y = 0;
+		platforms.push(plat1);
+	}
+	return platforms;
+}
+
 function makeSideBars(scene) {
 	var geometry = new THREE.BoxGeometry( 10, height/2., 1 );
 	var material = new THREE.MeshBasicMaterial( { color: 0x223300 } );
@@ -51,7 +114,7 @@ function genCharacter(scene) {
 	//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
 	var cube = new THREE.Mesh( geometry, materials );
 	scene.add( cube );
-	cube.position.z = 50;
+	cube.position.z = 45;
 	cube.position.x = 0;
 	cube.position.y = 0;
 
@@ -70,17 +133,6 @@ function genFloor(scene) {
 	return cube;
 }
 
-function genPlatform(scene) {
-	var geometry = new THREE.BoxGeometry( width/4, 10, 50 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: false, opacity:0.5} );
-	var cube = new THREE.Mesh( geometry, material );
-	scene.add( cube );
-	cube.position.z = 50;
-	cube.position.x = width/4;
-	cube.position.y = 0 ;
-	//cube.rotation.z = (Math.PI)/4;
-	return cube;
-}
 function genWater(scene){
 	var geometry = new THREE.BoxGeometry( width, height, 1 );
 	var material = new THREE.MeshBasicMaterial( { color: 0x0e113a , transparent: true, opacity:0.7} );
@@ -114,13 +166,22 @@ function onSurface(character, water){
 	else return 0;
 }
 
-function onPlatform(character, platform){
-	var firstBB = new THREE.Box3().setFromObject(platform);
-	var	secondBB = new THREE.Box3().setFromObject(character);
+function onPlatform(character, platforms){
 
-	var collision = firstBB.intersectsBox(secondBB);
+	for(var i = 0;i<platforms.length;i++){
+		var firstBB = new THREE.Box3().setFromObject(platforms[i]);
+		var	secondBB = new THREE.Box3().setFromObject(character);
 
-	return collision;
+		var collision = firstBB.intersectsBox(secondBB);
+		// console.log(firstBB);
+
+		var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+
+		if(collision) return collision;
+	}	
+
+	return 0;
 }
 
 function genDarknessFilter(scene, torch) {
@@ -182,7 +243,7 @@ function genDarknessFilter(scene, torch) {
 		};
 
 		var geometry = new THREE.ExtrudeGeometry( filter, extrusionSettings );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.99} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.0} );
 		var filterMesh = new THREE.Mesh( geometry, material );
 
 		geometry = new THREE.ShapeGeometry(lightPatch);
