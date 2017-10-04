@@ -165,6 +165,7 @@
 							levelState = 0;
 							genBackground(scene, currentLevel);
 							platforms = genPlatforms(scene, currentLevel);
+							collidableMeshList = collidableMeshList.concat(platforms);
 							character.position.x = width/4;
 							character.position.y = height;
 			
@@ -400,6 +401,7 @@
 						currentLevel = 2;
 						genBackground(scene, currentLevel);
 						platforms = genPlatforms(scene, currentLevel);
+						collidableMeshList = collidableMeshList.concat(platforms);
 					}
 				}
 				else if(currentLevel==2){
