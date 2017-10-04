@@ -63,12 +63,31 @@
 			onkeydown = onkeyup = function(e){
 			    e = e || event; // to deal with IE
 			    map[e.keyCode] = e.type == 'keydown';
+
+			    if(walkRight){
+			    	idle = 1;
+			    	walkRight = 0;
+			    }
+			    if(walkLeft){
+			    	idle = 1;
+			    	walkLeft = 0;
+			    }
+
 			    if(map[37]){
 			    	e.preventDefault();
 
 			    	if(onPlatform(character,platform)){ move(character, collidableMeshList,airMovementSpeed, 0);}
 			    	if (isInWater){ move(character, collidableMeshList, waterMovementSpeed, 0); }
 			    	torchDirection = 0;
+
+			    	if(idle){
+			    		walkLeft = 1;
+			    		idle = 0;
+			    	}
+			    	if(walkRight){
+			    		walkLeft = 1;
+			    		walkRight = 0;
+			    	}
 			    }
 			    if(map[38]){
 			    	e.preventDefault(); 
@@ -84,6 +103,15 @@
 			    	else{ move(character, collidableMeshList, -airMovementSpeed, 2);}
 			    	
 			    	torchDirection = Math.PI;
+
+			    	if(idle){
+			    		walkRight = 1;
+			    		idle = 0;
+			    	}
+			    	if(walkLeft){
+			    		walkRight = 1;
+			    		walkLeft = 0;
+			    	}
 			    }
 			    if(map[40]){
 			    	e.preventDefault(); 
@@ -134,7 +162,15 @@
 
 			var percentOxy;
 			var oxy;
-			
+
+
+			/* Animation State Diagrams */
+			var walkLeft = 0;
+			var walkRight = 0;
+			var idle = 1;
+
+			/* Level Variables */
+			var currentLevel = 0;
 
 			var animate = function () {
 				var isOnPlatform=onPlatform(character,platform) || onPlatform(character,floor) ;
@@ -224,7 +260,7 @@
 					document.getElementById("oxyBar").style.width = percentOxy;
 					document.getElementById("oxyBar").setAttribute('data-value',oxy)
 				}
-				if(oxy==0) {
+				if(oxy<=0) {
 					document.getElementById("infoBox").style.display = "block";
 					document.getElementById("message").innerHTML = "Death!";
 					onkeydown = onkeyup = function(event) {
@@ -234,7 +270,12 @@
 					}
 
 				}
-				
+
+
+				/*Character Animation Logic */
+				if(idle) character.material.setValues({color:0x00ff00});
+				else if(walkLeft) character.material.setValues({color:0xff0000});
+				else if(walkRight) character.material.setValues({color:0x0000ff});				
 
 			};
 
