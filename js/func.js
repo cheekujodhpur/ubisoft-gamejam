@@ -113,7 +113,7 @@ function genDarknessFilter(scene, torch) {
 	    filter.holes.push( visionHole );
 
 	    var extrusionSettings = {
-	    amount: 20,
+	    amount: 1,
 	    bevelEnabled: true,
 	    bevelThickness: 0.5,
 	    bevelSize: 0.5,
