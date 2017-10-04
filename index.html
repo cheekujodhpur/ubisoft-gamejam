@@ -24,6 +24,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="js/infoDialog.js"></script>
 		<script>
+			var initTime = new Date().getTime();
+			var lastTime = initTime;
+
 			var scene = new THREE.Scene();
 			//THREE.ImageUtils.crossOrigin = "Anonymous";
 			var width = window.innerWidth;
@@ -52,7 +55,7 @@
 
 			var lightType = 0;
 			var darknessFilter = genDarknessFilter(scene, lightType);
-			var airMovementSpeed = 5;
+			var airMovementSpeed = 10;
 			var waterMovementSpeed = 3;
 			var characterWaterAccel = -0.01;
 			var characterAirAccel = -0.2;
@@ -92,7 +95,7 @@
 			    }
 			    if(map[38]){
 			    	e.preventDefault(); 
-			    	if(onPlatform(character,platform)){ characterVelo = 5; }
+			    	if(onPlatform(character,platform) || onSurface(character,water)){ characterVelo = 5; }
 			    	if(isInWater){ characterVelo =0;move(character, collidableMeshList, waterMovementSpeed, 1); }
 			    	if(!isInWater){move(character, collidableMeshList, airMovementSpeed, 1);}
 			    	torchDirection = 1.5*Math.PI;
@@ -187,6 +190,7 @@
 
 			var animate = function () {
 				var isOnPlatform=onPlatform(character,platform) || onPlatform(character,floor) ;
+				var isOnSurface = onSurface(character, water);
 				requestAnimationFrame( animate );
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
@@ -201,7 +205,9 @@
 				}
 				else{
 					if(!isOnPlatform){
-					characterVelo += characterAirAccel;
+						if(!isOnSurface)
+							characterVelo += characterAirAccel;
+						else characterVelo += characterWaterAccel;
 					}
 					if(isInWater){
 						
@@ -248,9 +254,9 @@
 				else lockCharLeft = 1;*/
 
 				darknessFilter[0].position.x = character.position.x;
-				darknessFilter[0].position.y = character.position.y;
+				darknessFilter[0].position.y = character.position.y+40;
 				darknessFilter[1].position.x = character.position.x;
-				darknessFilter[1].position.y = character.position.y;
+				darknessFilter[1].position.y = character.position.y+40;
 				// console.log(torchDirection);
 
 				darknessFilter[0].rotation.z = 0.8*darknessFilter[0].rotation.z-0.2*torchDirection;
@@ -261,14 +267,15 @@
 
 				percentOxy = document.getElementById("oxyBar").style.width;
 				oxy = document.getElementById("oxyBar").getAttribute('data-value');
-				if(!isInWater && oxy<100) {
-					(oxy + 10) > 100 ? oxy = 100 : oxy += 10;
+				if((!isInWater || isOnSurface) && oxy<100 && timeIsNow()) {
+					oxy = parseInt(oxy) + 5;
+					oxy = oxy > 100 ? 100: oxy;
 					percentOxy = oxy+'%';
 					document.getElementById("oxyBar").style.width = percentOxy;
 					document.getElementById("oxyBar").setAttribute('data-value',oxy)
 				}
-				if(isInWater && oxy>0 && oxy<=100) {
-					oxy = Number(oxy).toFixed(2)-  Number(0.1).toFixed(2);
+				if(isInWater && oxy>0 && oxy<=100 && timeIsNow()) {
+					oxy = parseInt(oxy)-1;
 					percentOxy = oxy+'%';
 					document.getElementById("oxyBar").style.width = percentOxy;
 					document.getElementById("oxyBar").setAttribute('data-value',oxy)
