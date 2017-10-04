@@ -40,7 +40,7 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
-			genBackground(scene, 1);
+			genBackground(scene, currentLevel);
 
 			collidableMeshList = [];
 			// Making bars
@@ -48,11 +48,12 @@
 			collidableMeshList = collidableMeshList.concat(floor);
 
 			//get level Platforms
-			var platforms = genPlatforms(scene, 1);
+			var platforms = genPlatforms(scene, currentLevel);
 			
 			collidableMeshList = collidableMeshList.concat(platforms);
 			var water = genWater(scene);
 			var character = genCharacter(scene);
+
 			character.position.x = width/4;
 			character.position.y = height;
 			
@@ -162,6 +163,11 @@
 			    			document.getElementById("infoBox").style.display = "none";
 							currentLevel = 1 ;
 							levelState = 0;
+							genBackground(scene, currentLevel);
+							platforms = genPlatforms(scene, currentLevel);
+							character.position.x = width/4;
+							character.position.y = height;
+			
 			    		}
 			    	}
 			    }
@@ -349,6 +355,7 @@
 				/*Level 1 logic*/
 				else if(currentLevel == 1) {
 					if(levelState == 0) {
+
 						if(hasTorch()){
 							levelState = 1;
 						}
@@ -391,6 +398,8 @@
 						//Clear DOM, show transition 
 						levelState = 0;
 						currentLevel = 2;
+						genBackground(scene, currentLevel);
+						platforms = genPlatforms(scene, currentLevel);
 					}
 				}
 				else if(currentLevel==2){
