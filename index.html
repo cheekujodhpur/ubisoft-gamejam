@@ -39,7 +39,8 @@
 			collidableMeshList = [];
 			// Making bars
 			collidableMeshList = collidableMeshList.concat(makeSideBars(scene));
-			collidableMeshList = collidableMeshList.concat(genFloor(scene));
+			var floor = genFloor(scene);
+			collidableMeshList = collidableMeshList.concat(floor);
 			var platform = genPlatform(scene);
 			collidableMeshList = collidableMeshList.concat(platform);
 			var water = genWater(scene);
@@ -127,9 +128,8 @@
 			
 
 			var animate = function () {
-				var isOnPlatform=onPlatform(character,platform);
+				var isOnPlatform=onPlatform(character,platform) || onPlatform(character,floor) ;
 				requestAnimationFrame( animate );
-				console.log(characterVelo);
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
 				if(inWater(character, water)){
