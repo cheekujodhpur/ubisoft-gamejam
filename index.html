@@ -36,8 +36,10 @@
 			character.position.y = height;
 			
 			var darknessFilter = genDarknessFilter(scene, 0);
-			var movementSpeed = 5;
-			var characterAccel = -0.01;
+			var airMovementSpeed = 5;
+			var waterMovementSpeed = 3;
+			var characterWaterAccel = -0.01;
+			var characterAirAccel = -0.2;
 			var characterVelo = 0;
 
 			var torchDirection = 0;
@@ -47,19 +49,32 @@
 			    e = e || event; // to deal with IE
 			    map[e.keyCode] = e.type == 'keydown';
 			    if(map[37]){
-			    	e.preventDefault(); move(character, collidableMeshList, movementSpeed, 0);
+			    	e.preventDefault();
+
+			    	if(onPlatform(character,platform)){ move(character, collidableMeshList,airMovementSpeed, 0);}
+			    	if (isInWater){ move(character, collidableMeshList, waterMovementSpeed, 0); }
 			    	torchDirection = 0;
 			    }
 			    if(map[38]){
-			    	e.preventDefault(); if(isInWater){characterVelo = 0; move(character, collidableMeshList, movementSpeed, 1);}
+			    	e.preventDefault(); 
+			    	if(onPlatform(character,platform)){ characterVelo = 5; }
+			    	if(isInWater){ characterVelo =0;move(character, collidableMeshList, waterMovementSpeed, 1); }
+			    	if(!isInWater){move(character, collidableMeshList, airMovementSpeed, 1);}
 			    	torchDirection = 1.5*Math.PI;
+
 			    }
 			    if(map[39]){
-			    	e.preventDefault(); move(character, collidableMeshList, -movementSpeed, 2);
+			    	e.preventDefault(); 
+			    	if(isInWater){ move(character, collidableMeshList, -waterMovementSpeed, 2); }
+			    	else{ move(character, collidableMeshList, -airMovementSpeed, 2);}
+			    	
 			    	torchDirection = Math.PI;
 			    }
 			    if(map[40]){
-			    	e.preventDefault(); if(isInWater){move(character, collidableMeshList, -movementSpeed, 3);}
+			    	e.preventDefault(); 
+			    	
+			    	if (isInWater){ move(character, collidableMeshList, -waterMovementSpeed, 3); }
+			    	else{ move(character, collidableMeshList, -airMovementSpeed, 3);}
 			    	torchDirection = 0.5*Math.PI;
 			    }
 
@@ -93,6 +108,7 @@
 			var firstBB;
 			var secondBB;
 			var isInWater = false;
+			//var isOnPlatform = fasle;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
@@ -100,21 +116,26 @@
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
 				if(inWater(character, water)){
-					characterVelo += characterAccel;
+					characterVelo += characterWaterAccel;
 					if(!isInWater){
 						characterVelo *= 0.1;
 					}
 					isInWater = true;
 				}
 				else{
-					characterVelo += -.05;
+					characterVelo += characterAirAccel;
 					if(isInWater){
 						
 					}
 					isInWater = false;
 				}
-				//characterVelo += characterAccel;
+				//characterVelo += characterWaterAccel;
+				if(onPlatform(character,platform) && characterVelo > 0){
+					move(character, collidableMeshList, characterVelo, 3, 1);
+					//characterVelo-=0.05;
+				}
 				move(character, collidableMeshList, characterVelo, 3);
+				//console.log(characterVelo);
 				
 
 				//console.log(character.position);

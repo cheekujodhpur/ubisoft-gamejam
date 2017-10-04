@@ -74,7 +74,7 @@ function inWater(character, water){
 	return collision;
 }
 
-function onPLatform(character, platform){
+function onPlatform(character, platform){
 	var firstBB = new THREE.Box3().setFromObject(platform);
 	var	secondBB = new THREE.Box3().setFromObject(character);
 
@@ -165,33 +165,40 @@ function genDarknessFilter(scene, torch) {
 	}
 }
 
-function move(character, collidableMeshList, step, direction) {
-	for(var i = 0;i<collidableMeshList.length;i++){
-		var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
-		var	secondBB = new THREE.Box3().setFromObject(character);
+function move(character, collidableMeshList, step, direction, flag = 0) {
+	if(!flag){
+		for(var i = 0;i<collidableMeshList.length;i++){
+			var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
+			var	secondBB = new THREE.Box3().setFromObject(character);
 
-		var collision = firstBB.intersectsBox(secondBB);
-		// console.log(firstBB);
+			var collision = firstBB.intersectsBox(secondBB);
+			// console.log(firstBB);
 
-		var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+			var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+			var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
 
-		if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
-			return;
-		}
-		if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
-			return;
-		}
-		if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
-			return;
-		}
-		if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
-			return;
-		}
-	}		
+			if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
+				return;
+			}
+			if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
+				return;
+			}
+			if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
+				return;
+			}
+			if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
+				return;
+			}
+		}	
+	}
 	if(direction%2)
 		character.position.y += step;
 	else
 		character.position.x += step;
 	
+}
+
+function jump(character){
+	characterVelo = 5;
+
 }
