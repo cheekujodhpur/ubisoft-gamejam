@@ -42,7 +42,7 @@ function genBackground(scene, level) {
 		scene.add( cube );
 		cube.position.z = 51;
 	}
-	level = 2;
+	level =2 ;
 	if(level==2) {
 		var geometry = new THREE.BoxGeometry( width, height, 1 );
 
