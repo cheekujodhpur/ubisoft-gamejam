@@ -167,6 +167,7 @@ function genPlatforms(scene, level) {
 			platforms.push(plat3);
 		}
 
+
 		geometry = new THREE.BoxGeometry( 1.,400, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
 		var plat4 = new THREE.Mesh(geometry, material);
@@ -297,15 +298,17 @@ function onSurface(character, water){
 
 function onPlatform(character, platforms){
 
+	var trialCharacter = character.clone();
+	trialCharacter.position.y -= 1e-3;
 	for(var i = 0;i<platforms.length;i++){
 		var firstBB = new THREE.Box3().setFromObject(platforms[i]);
-		var	secondBB = new THREE.Box3().setFromObject(character);
+		var	secondBB = new THREE.Box3().setFromObject(trialCharacter);
 
 		var collision = firstBB.intersectsBox(secondBB);
 		// console.log(firstBB);
 
-		var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+		/*var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;*/
 
 		if(collision) return collision;
 	}	
@@ -396,35 +399,81 @@ function genDarknessFilter(scene, torch) {
 }
 
 function move(character, collidableMeshList, step, direction, flag = 0) {
+	var myStep = step;
+	var character_clone = character.clone();
+	// console.log(character_clone);
+	var i;
+	if(Math.abs(step)<1e-4)return;
+
 	if(!flag){
-		for(var i = 0;i<collidableMeshList.length;i++){
-			var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
-			var	secondBB = new THREE.Box3().setFromObject(character);
+			
+			if(direction%2)
+				character_clone.position.y = character.position.y + myStep;
+			else
+				character_clone.position.x = character.position.x + myStep;
 
-			var collision = firstBB.intersectsBox(secondBB);
-			// console.log(firstBB);
+			for(i = 0;i<collidableMeshList.length;i++){
+				var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
+				var	secondBB = new THREE.Box3().setFromObject(character_clone);
 
-			var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-			var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+				var dy = Math.abs(character.position.y - collidableMeshList[i].position.y);
+				var dx = Math.abs(character.position.x - collidableMeshList[i].position.x);
 
-			if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
-				return;
+				var dy2 = Math.abs(character_clone.position.y - collidableMeshList[i].position.y);
+				var dx2 = Math.abs(character_clone.position.x - collidableMeshList[i].position.x);
+				var collision = firstBB.intersectsBox(secondBB);
+
+				if(collision){
+					/*if(direction%2){
+						if(dx2 < dx){
+							myStep = myStep/2.;
+							break;
+						}
+					}
+					else{
+						if(dy2 < dy){
+							myStep = myStep/2.;
+							break;
+						}
+					}*/
+					break;
+				}
+				//console.log(myStep);
+				//console.log(character.position.x + "," + character_clone.position.x);
+				/*// console.log(firstBB);
+
+				var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+				var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+
+				if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
+					return;
+				}
+				if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
+					return;
+				}
+				if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
+					return;
+				}
+				if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
+					return;
+				}*/
 			}
-			if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
-				return;
+			if(i==collidableMeshList.length){
+				//console.log(character_clone.position.x);
+				character.position.x = character_clone.position.x;
+				character.position.y = character_clone.position.y;
 			}
-			if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
-				return;
+			else{
+				move(character, collidableMeshList, step/2., direction);
 			}
-			if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
-				return;
-			}
-		}	
+		
 	}
-	if(direction%2)
-		character.position.y += step;
-	else
-		character.position.x += step;
+	else{
+		if(direction%2)
+			character.position.y += step;
+		else
+			character.position.x += step;
+	}
 	
 }
 
