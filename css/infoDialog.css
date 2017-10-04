@@ -4,6 +4,7 @@
 	display: none;
 	position: absolute;
 	background-color: grey;
+    opacity: 0.5;
 }
 .center {
     margin: auto;

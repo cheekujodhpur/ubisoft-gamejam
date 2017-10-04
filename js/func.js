@@ -182,11 +182,11 @@ function genDarknessFilter(scene, torch) {
 		};
 
 		var geometry = new THREE.ExtrudeGeometry( filter, extrusionSettings );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.95} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.99} );
 		var filterMesh = new THREE.Mesh( geometry, material );
 
 		geometry = new THREE.ShapeGeometry(lightPatch);
-		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.1});
+		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xFFA824, transparent:true, opacity:0.3});
 		lightMaterial.side = THREE.DoubleSide;
 		//material = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.5});
 		var lightMesh = new THREE.Mesh(geometry, lightMaterial);
