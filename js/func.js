@@ -66,6 +66,33 @@ function genPlatforms(scene, level) {
 		plat2.position.x = 345;
 		plat2.position.y = 2.;
 		platforms.push(plat2);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
+		var plat3 = new THREE.Mesh(geometry, material);
+		scene.add(plat3);
+		plat3.position.z = 45;
+		plat3.position.x = 106;
+		plat3.position.y = 2.;
+		platforms.push(plat3);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat4 = new THREE.Mesh(geometry, material);
+		scene.add(plat4);
+		plat4.position.z = 45;
+		plat4.position.x = -309;
+		plat4.position.y = 2.;
+		platforms.push(plat4);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat5 = new THREE.Mesh(geometry, material);
+		scene.add(plat5);
+		plat5.position.z = 45;
+		plat5.position.x = -600;
+		plat5.position.y = 2.;
+		platforms.push(plat5);
 	}
 	return platforms;
 }
