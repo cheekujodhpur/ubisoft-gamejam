@@ -48,7 +48,9 @@
 			character.position.x = width/4;
 			character.position.y = height;
 			
-			var darknessFilter = genDarknessFilter(scene, 0);
+
+			var lightType = 0;
+			var darknessFilter = genDarknessFilter(scene, lightType);
 			var airMovementSpeed = 5;
 			var waterMovementSpeed = 3;
 			var characterWaterAccel = -0.01;
@@ -102,6 +104,13 @@
 			    }
 			    if(map[40] && map[37]){
 			    	torchDirection = 0.25*Math.PI;
+			    }
+
+
+			    //toggle light
+			    if(map[76]) {
+			    	lightType = 1-lightType;
+			    	darknessFilter = genDarknessFilter(scene, lightType);
 			    }
 
 			}
@@ -189,11 +198,15 @@
 				if(collision) lockCharLeft = 0;
 				else lockCharLeft = 1;*/
 
-				darknessFilter.position.x = character.position.x;
-				darknessFilter.position.y = character.position.y;
+				darknessFilter[0].position.x = character.position.x;
+				darknessFilter[0].position.y = character.position.y;
+				darknessFilter[1].position.x = character.position.x;
+				darknessFilter[1].position.y = character.position.y;
 				// console.log(torchDirection);
 
-				darknessFilter.rotation.z = 0.8*darknessFilter.rotation.z-0.2*torchDirection;
+				darknessFilter[0].rotation.z = 0.8*darknessFilter[0].rotation.z-0.2*torchDirection;
+				darknessFilter[1].rotation.z = 0.8*darknessFilter[1].rotation.z-0.2*torchDirection;
+
 
 				renderer.render(scene, camera);
 
