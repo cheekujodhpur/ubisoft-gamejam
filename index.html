@@ -10,8 +10,8 @@
 		  <link rel="stylesheet" href="css/infoDialog.css">
 	</head>
 	<body>
-		<div style="position: fixed;top: 20px;width: 10em;height: 24px; background-color: grey; border: solid 2px yellow">
-  			<div id = "oxyBar" style="height:24px;width:100%; background-color: red;" data-value =100></div>
+		<div style="position: fixed;top: 20px; left:20px; width: 20em;height: 24px; background-color: #017275; border: solid 5px #1f2652; border-radius:5px;">
+  			<div id = "oxyBar" style="height:24px;width:100%; background: linear-gradient(to bottom, #00b0ad , #007075)" data-value =100></div>
 		</div>
 
 		<div id="infoBox" class="center">
@@ -80,8 +80,8 @@
 			    if(map[37]){
 			    	e.preventDefault();
 
-			    	if(onPlatform(character,platform)){ move(character, collidableMeshList,airMovementSpeed, 0);}
-			    	if (isInWater){ move(character, collidableMeshList, waterMovementSpeed, 0); }
+			    	if(isInWater){ move(character, collidableMeshList, waterMovementSpeed, 2); }
+			    	else{ move(character, collidableMeshList, airMovementSpeed, 2);}
 			    	torchDirection = 0;
 
 			    	if(idleL || idleR){
@@ -103,6 +103,7 @@
 			    }
 			    if(map[39]){
 			    	e.preventDefault(); 
+
 			    	if(isInWater){ move(character, collidableMeshList, -waterMovementSpeed, 2); }
 			    	else{ move(character, collidableMeshList, -airMovementSpeed, 2);}
 			    	
