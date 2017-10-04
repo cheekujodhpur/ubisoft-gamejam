@@ -19,9 +19,37 @@ function makeSideBars(scene) {
 }
 
 function genCharacter(scene) {
-	var geometry = new THREE.BoxGeometry( 10, 10, 1 );
-	var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
-	var cube = new THREE.Mesh( geometry, material );
+	var geometry = new THREE.BoxGeometry( 50, 130, 1 );
+	var loader = new THREE.TextureLoader();
+	loader.setCrossOrigin("Anonymous");
+	var materials = [
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_walkL.png'),
+           transparent:true
+       })
+    ];
+	//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+	var cube = new THREE.Mesh( geometry, materials );
 	scene.add( cube );
 	cube.position.z = 50;
 	cube.position.x = 0;
@@ -96,7 +124,7 @@ function genDarknessFilter(scene, torch) {
 		
 
 	    var visionHole = new THREE.Path();
-	    var radius = 50;
+	    var radius = 500;
 	    visionHole.moveTo(radius, 0);
 	    var step = 2*Math.PI / 100;
 	    for(var i = 0;i<=2*Math.PI;i+=step){
@@ -146,7 +174,7 @@ function genDarknessFilter(scene, torch) {
 		var filterMesh = new THREE.Mesh( geometry, material );
 
 		geometry = new THREE.ShapeGeometry(lightPatch);
-		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.5});
+		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.1});
 		lightMaterial.side = THREE.DoubleSide;
 		//material = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.5});
 		var lightMesh = new THREE.Mesh(geometry, lightMaterial);

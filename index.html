@@ -25,6 +25,7 @@
 		<script src="js/infoDialog.js"></script>
 		<script>
 			var scene = new THREE.Scene();
+			//THREE.ImageUtils.crossOrigin = "Anonymous";
 			var width = window.innerWidth;
 			var height = window.innerHeight;
 			// Orthographic, Keeping near at .1, as close as possible
@@ -65,11 +66,11 @@
 			    map[e.keyCode] = e.type == 'keydown';
 
 			    if(walkRight){
-			    	idle = 1;
+			    	idleL = 1;
 			    	walkRight = 0;
 			    }
 			    if(walkLeft){
-			    	idle = 1;
+			    	idleR = 1;
 			    	walkLeft = 0;
 			    }
 
@@ -80,9 +81,9 @@
 			    	if (isInWater){ move(character, collidableMeshList, waterMovementSpeed, 0); }
 			    	torchDirection = 0;
 
-			    	if(idle){
+			    	if(idleL || idleR){
 			    		walkLeft = 1;
-			    		idle = 0;
+			    		idleL = 0; idleR = 0;
 			    	}
 			    	if(walkRight){
 			    		walkLeft = 1;
@@ -104,9 +105,9 @@
 			    	
 			    	torchDirection = Math.PI;
 
-			    	if(idle){
+			    	if(idleL || idleR){
 			    		walkRight = 1;
-			    		idle = 0;
+			    		idleL = 0; idleR = 0;
 			    	}
 			    	if(walkLeft){
 			    		walkRight = 1;
@@ -167,7 +168,18 @@
 			/* Animation State Diagrams */
 			var walkLeft = 0;
 			var walkRight = 0;
-			var idle = 1;
+			var idleL = 1;
+			var idleR = 0;
+
+			/* Animation */
+			var loader = new THREE.TextureLoader();
+			loader.setCrossOrigin("Anonymous");
+			var textureIdleL = loader.load('images/character_idleL.png' );
+			var textureIdleR = loader.load('images/character_idleR.png');    
+			var textureWalkL = loader.load('images/character_walkL.png' );
+			var textureWalkR = loader.load('images/character_walkR.png' );
+
+			//character.material.setValues({map:textureIdle});
 
 			/* Level Variables */
 			var currentLevel = 0;
@@ -274,9 +286,10 @@
 
 
 				/*Character Animation Logic */
-				if(idle) character.material.setValues({color:0x00ff00});
-				else if(walkLeft) character.material.setValues({color:0xff0000});
-				else if(walkRight) character.material.setValues({color:0x0000ff});				
+				if(idleL) character.material[5].setValues({map:textureIdleL});
+				if(idleR) character.material[5].setValues({map:textureIdleR});
+				else if(walkLeft) character.material[5].setValues({map:textureWalkL});
+				else if(walkRight) character.material[5].setValues({map:textureWalkR});
 
 			};
 
