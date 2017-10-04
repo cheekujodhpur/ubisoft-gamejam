@@ -49,6 +49,7 @@ function genPlatforms(scene, level) {
 
 	platforms = [];
 	if(level==1){
+
 		
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0 } );
 		
@@ -102,6 +103,51 @@ function genPlatforms(scene, level) {
 		platforms.push(plat11);
 
 
+		geometry = new THREE.BoxGeometry( width/4.,20., 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.2 } );
+		var plat1 = new THREE.Mesh(geometry, material);
+		scene.add(plat1);
+		plat1.position.z = 45;
+		plat1.position.x = width/4.;
+		plat1.position.y = 0;
+		platforms.push(plat1);
+
+		geometry = new THREE.BoxGeometry( 8.,300, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0 } );
+		var plat2 = new THREE.Mesh(geometry, material);
+		scene.add(plat2);
+		plat2.position.z = 45;
+		plat2.position.x = 345;
+		plat2.position.y = 2.;
+		platforms.push(plat2);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
+		var plat3 = new THREE.Mesh(geometry, material);
+		scene.add(plat3);
+		plat3.position.z = 45;
+		plat3.position.x = 106;
+		plat3.position.y = 2.;
+		platforms.push(plat3);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat4 = new THREE.Mesh(geometry, material);
+		scene.add(plat4);
+		plat4.position.z = 45;
+		plat4.position.x = -309;
+		plat4.position.y = 2.;
+		platforms.push(plat4);
+
+		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
+		var plat5 = new THREE.Mesh(geometry, material);
+		scene.add(plat5);
+		plat5.position.z = 45;
+		plat5.position.x = -600;
+		plat5.position.y = 2.;
+		platforms.push(plat5);
+
 	}
 	return platforms;
 }
@@ -127,7 +173,7 @@ function makeSideBars(scene) {
 }
 
 function genCharacter(scene) {
-	var geometry = new THREE.BoxGeometry( 50, 130, 1 );
+	var geometry = new THREE.BoxGeometry( 80, 130, 1 );
 	var loader = new THREE.TextureLoader();
 	loader.setCrossOrigin("Anonymous");
 	var materials = [
