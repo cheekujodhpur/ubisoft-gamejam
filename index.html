@@ -7,10 +7,22 @@
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
 		</style>
+		  <link rel="stylesheet" href="css/infoDialog.css">
 	</head>
 	<body>
+		<div style="position: fixed;top: 20px;width: 10em;height: 24px; background-color: grey; border: solid 2px yellow">
+  			<div id = "oxyBar" style="height:24px;width:100%; background-color: red;" data-value =100></div>
+		</div>
+
+		<div id="infoBox" class="center">
+			<center><h2 style="font-family: sans-serif;">Information</h2></center>
+			<p id="message"></p>
+		</div>
+
 		<script src="js/three.js"></script>
 		<script src="js/func.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="js/infoDialog.js"></script>
 		<script>
 			var scene = new THREE.Scene();
 			var width = window.innerWidth;
@@ -89,6 +101,9 @@
 			var secondBB;
 			var isInWater = false;
 
+			var percentOxy;
+			var oxy;
+
 			var animate = function () {
 				requestAnimationFrame( animate );
 
@@ -146,6 +161,33 @@
 				darknessFilter.rotation.z = 0.8*darknessFilter.rotation.z-0.2*torchDirection;
 
 				renderer.render(scene, camera);
+
+				percentOxy = document.getElementById("oxyBar").style.width;
+				oxy = document.getElementById("oxyBar").getAttribute('data-value');
+				if(!isInWater && oxy<100) {
+					oxy += 40;
+					percentOxy = oxy+'%';
+					document.getElementById("oxyBar").style.width = percentOxy;
+					document.getElementById("oxyBar").setAttribute('data-value',oxy)
+				}
+				if(isInWater && oxy>0 && oxy<=100) {
+					oxy = Number(oxy).toFixed(2)-  Number(0.1).toFixed(2);
+					percentOxy = oxy+'%';
+					document.getElementById("oxyBar").style.width = percentOxy;
+					document.getElementById("oxyBar").setAttribute('data-value',oxy)
+				}
+				if(oxy==0) {
+					document.getElementById("infoBox").style.display = "block";
+					document.getElementById("message").innerHTML = "Death!";
+					onkeydown = onkeyup = function(event) {
+						if(event.keyCode = 27) {
+							location.reload();
+						}
+					}
+
+				}
+				
+
 			};
 
 			animate();
