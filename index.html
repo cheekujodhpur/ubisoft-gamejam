@@ -318,7 +318,6 @@
 
 				/*Level 0 logic */
 				if( currentLevel == 0 ){
-					console.log('here');
 					document.getElementById("infoBox").style.display = "block";
 					if( levelState == 0 ){
 						document.getElementById('message').innerHTML = "You are driving back from the office, it's been raining cats and dogs since morning. You're suddenly hit by huge flow of water, and the next thing you know you are on on the roof of a familiar house. You are clueless and worried about your family. Are they even alive? There is no help or human around you. Will you risk your life to swim back to your house? You notice something peculiar about the water..... \n\n Press Enter to Continue" ;
@@ -327,6 +326,97 @@
 					else if (levelState == 1){
 						document.getElementById('message').innerHTML = "Use &larr &rarr &uarr &darr keys to control the player. Press the i button for interactive screen. \n\nPress Enter to Play" ;
 					}
+				}
+
+				/*Level 1 logic*/
+				else if(currentLevel == 1) {
+					if(levelState == 0) {
+						if(hasTorch()){
+							levelState = 1;
+						}
+						if(hasKey()){
+							//prevent this from happening
+							//Give info like, can't pick coz can't see
+							levelState = 0;
+						}
+						if(hasKey() && hasTorch()){
+							levelState = 3;
+						}
+						if(collidesDoor()){
+							//nothing, set apt info
+						}
+					}
+
+					else if(levelState == 1){
+						if(hasKey()){
+							levelState = 3;
+						}
+						if(collidesDoor()){
+							//nothing, set apt info
+						}
+					}
+
+					else if(levelState == 2){
+						if(hasTorch()){
+							levelState = 3;
+						}
+						if(collidesDoor()){
+							levelState = 4;
+						}
+					}
+					else if(levelState == 3){
+						if(collidesDoor()){
+							levelState = 4;
+						}									
+					}
+					else if(levelState == 4){
+						//Clear DOM, show transition 
+						levelState = 0;
+						currentLevel = 2;
+					}
+				}
+				else if(currentLevel==2){
+					if(levelState == 0){
+						//Drive the player to the right water 
+						if(hasDolphin()){
+						levelState = 1; 
+							//Normal slow movement to left, fast to right
+						}
+						if(collidesDoor()){
+							//Apt info
+						}
+					}
+					else if(levelState == 1){
+						if(collidesRock()){
+							//remove rock
+							levelState = 2;//key exposed
+						}
+						if(!hasDolphin()){
+							//Drive the guy to right
+						}
+					}
+					else if(levelState == 2){
+						if(hasKey()){
+							levelState = 3;
+						}
+						if(!hasDolphin()){
+							//Drive the guy to right
+						}
+					}
+					else if(levelState == 3){
+						if(!hasDolphin()){
+							//Drive the guy to right
+						}
+						if(collidesDoor()){
+							levelState = 4;
+						}
+					}
+					else if(levelState == 4){
+						//Hide DOM Elements, new level./
+						currentLevel = 3 ;
+						levelState = 0;
+					}
+
 				}
 			};
 
