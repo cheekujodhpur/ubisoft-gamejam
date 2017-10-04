@@ -19,9 +19,37 @@ function makeSideBars(scene) {
 }
 
 function genCharacter(scene) {
-	var geometry = new THREE.BoxGeometry( 10, 10, 1 );
-	var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
-	var cube = new THREE.Mesh( geometry, material );
+	var geometry = new THREE.BoxGeometry( 50, 130, 1 );
+	var loader = new THREE.TextureLoader();
+	loader.setCrossOrigin("Anonymous");
+	var materials = [
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_idleL.png'),
+           transparent:true
+       }),
+       new THREE.MeshBasicMaterial({
+           map: loader.load('images/character_walkL.png'),
+           transparent:true
+       })
+    ];
+	//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
+	var cube = new THREE.Mesh( geometry, materials );
 	scene.add( cube );
 	cube.position.z = 50;
 	cube.position.x = 0;
@@ -71,7 +99,19 @@ function inWater(character, water){
 
 	var collision = firstBB.intersectsBox(secondBB);
 
+	if (secondBB.max.y > firstBB.max.y) return 0;
+
 	return collision;
+}
+
+function onSurface(character, water){
+	var firstBB = new THREE.Box3().setFromObject(water);
+	var	secondBB = new THREE.Box3().setFromObject(character);
+
+	var collision = firstBB.intersectsBox(secondBB);
+
+	if (collision && secondBB.max.y > firstBB.max.y) return 1;
+	else return 0;
 }
 
 function onPlatform(character, platform){
@@ -114,7 +154,7 @@ function genDarknessFilter(scene, torch) {
 	else {
 
 	    var visionHole = new THREE.Path();
-	    var a = 30.;
+	    var a = 10.;
 	    var b = 500.;
 	    visionHole.moveTo(0, a/2.);
 	    visionHole.lineTo(0, -a/2.);
@@ -142,11 +182,11 @@ function genDarknessFilter(scene, torch) {
 		};
 
 		var geometry = new THREE.ExtrudeGeometry( filter, extrusionSettings );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.995} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.99} );
 		var filterMesh = new THREE.Mesh( geometry, material );
 
 		geometry = new THREE.ShapeGeometry(lightPatch);
-		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.5});
+		var lightMaterial = new THREE.MeshBasicMaterial ({color:0xFFA824, transparent:true, opacity:0.3});
 		lightMaterial.side = THREE.DoubleSide;
 		//material = new THREE.MeshBasicMaterial ({color:0xffff00, transparent:true, opacity:0.5});
 		var lightMesh = new THREE.Mesh(geometry, lightMaterial);
@@ -201,4 +241,13 @@ function move(character, collidableMeshList, step, direction, flag = 0) {
 function jump(character){
 	characterVelo = 5;
 
+}
+
+function timeIsNow(){
+	var currTime = new Date().getTime();
+	if(currTime - lastTime > 500){
+		lastTime = currTime;
+		return 1;
+	}
+	return 0;
 }
