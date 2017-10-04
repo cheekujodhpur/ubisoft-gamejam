@@ -124,30 +124,39 @@
 
 			var percentOxy;
 			var oxy;
+			
 
 			var animate = function () {
+				var isOnPlatform=onPlatform(character,platform);
 				requestAnimationFrame( animate );
-
+				console.log(characterVelo);
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
 				if(inWater(character, water)){
+					if(!isOnPlatform){
 					characterVelo += characterWaterAccel;
+					}
 					if(!isInWater){
 						characterVelo *= 0.1;
 					}
 					isInWater = true;
 				}
 				else{
+					if(!isOnPlatform){
 					characterVelo += characterAirAccel;
+					}
 					if(isInWater){
 						
 					}
 					isInWater = false;
 				}
 				//characterVelo += characterWaterAccel;
-				if(onPlatform(character,platform) && characterVelo > 0){
+				if(isOnPlatform && characterVelo > 0){
 					move(character, collidableMeshList, characterVelo, 3, 1);
-					//characterVelo-=0.05;
+					//characterVelo-=characterAirAccel;
+				}
+				if(isOnPlatform && characterVelo < 0){
+					characterVelo=0;
 				}
 				move(character, collidableMeshList, characterVelo, 3);
 				//console.log(characterVelo);
