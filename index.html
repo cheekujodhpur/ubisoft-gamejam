@@ -62,7 +62,7 @@
 			var lightType = 0;
 			var darknessFilter = genDarknessFilter(scene, lightType);
 			var airMovementSpeed = 10;
-			var waterMovementSpeed = 3;
+			var waterMovementSpeed = 5;
 			var characterWaterAccel = -0.01;
 			var characterAirAccel = -0.2;
 			var characterVelo = 0;
@@ -428,7 +428,7 @@
 				}
 				if(oxy<=0) {
 					document.getElementById("infoBox").style.display = "block";
-					document.getElementById("message").innerHTML = "Death!";
+					document.getElementById("message").innerHTML = "Death by No Oxygen!\nPay attention to the oxy bar on your top left!\n Press Esc to restart!";
 					onkeydown = onkeyup = function(event) {
 						if(event.keyCode == 27) {
 							location.reload();
@@ -451,7 +451,7 @@
 					}
 
 					else if (levelState == 1){
-						document.getElementById('message').innerHTML = "Use arrow keys to control the player. Press the i button for interactive screen. \n\nPress Enter to Play" ;
+						document.getElementById('message').innerHTML = "Use arrow keys to control the player. Press the i button for interactive screen. \n Press the l button to switch to torch. \n\nPress Enter to Play" ;
 					}
 				} 
 

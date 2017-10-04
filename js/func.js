@@ -168,13 +168,13 @@ function genPlatforms(scene, level) {
 		}
 
 
-		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		geometry = new THREE.BoxGeometry( 1.,200, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
 		var plat4 = new THREE.Mesh(geometry, material);
 		scene.add(plat4);
 		plat4.position.z = 45;
 		plat4.position.x = -309;
-		plat4.position.y = 2.;
+		plat4.position.y = 202;
 		platforms.push(plat4);
 
 		geometry = new THREE.BoxGeometry( 1.,400, 1 );
@@ -268,9 +268,9 @@ function genWater(scene){
 	var material = new THREE.MeshBasicMaterial( { color: 0x0e113a , transparent: true, opacity:0.7} );
 	var cube = new THREE.Mesh( geometry, material );
 	scene.add( cube );
-	cube.position.z = 51;
+	cube.position.z = 46;
 	cube.position.x = 0;
-	cube.position.y = 3*height / -4.;
+	cube.position.y = height / -4. - 50;
 
 	return cube;	
 }
@@ -321,9 +321,9 @@ function genKey(scene){
 		//var material = new THREE.MeshBasicMaterial( { color: 0xff11aa } );
 		var cube = new THREE.Mesh( geometry, materials );
 		scene.add( cube );
-		cube.position.z = 45;
+		cube.position.z = 46;
 		cube.position.x = 500;
-		cube.position.y = -250;
+		cube.position.y = -200;
 
 		return cube;
 }
@@ -341,7 +341,7 @@ function hasKey(character, key){
 function collidesDoor(character){
 	var	secondBB = new THREE.Box3().setFromObject(character);
 
-	if(secondBB.min.x>(width/2)-100 && secondBB.min.y>height/-2+120 )
+	if(secondBB.min.x < -500 && secondBB.min.y< -150 )
 	{
 		return true;
 	}
@@ -393,7 +393,7 @@ function genDarknessFilter(scene, torch) {
 		
 
 	    var visionHole = new THREE.Path();
-	    var radius = 50;
+	    var radius = 130;
 	    visionHole.moveTo(radius, 0);
 	    var step = 2*Math.PI / 100;
 	    for(var i = 0;i<=2*Math.PI;i+=step){
@@ -439,7 +439,7 @@ function genDarknessFilter(scene, torch) {
 		};
 
 		var geometry = new THREE.ExtrudeGeometry( filter, extrusionSettings );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.0} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 , transparent: true, opacity:0.99} );
 		var filterMesh = new THREE.Mesh( geometry, material );
 
 		geometry = new THREE.ShapeGeometry(lightPatch);
@@ -456,8 +456,8 @@ function genDarknessFilter(scene, torch) {
 		catch(e){}
 		scene.add( filterMesh );
 		scene.add( lightMesh );
-		filterMesh.position.z = 49;
-		lightMesh.position.z = 49;
+		filterMesh.position.z = 48;
+		lightMesh.position.z = 48;
 
 		return [filterMesh, lightMesh];
 }
