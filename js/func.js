@@ -147,15 +147,6 @@ function genPlatforms(scene, level) {
 		platforms.push(plat11);
 
 
-		geometry = new THREE.BoxGeometry( width/4.,20., 1 );
-		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.2 } );
-		var plat1 = new THREE.Mesh(geometry, material);
-		scene.add(plat1);
-		plat1.position.z = 45;
-		plat1.position.x = width/4.;
-		plat1.position.y = 0;
-		platforms.push(plat1);
-
 		geometry = new THREE.BoxGeometry( 8.,300, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0 } );
 		var plat2 = new THREE.Mesh(geometry, material);
@@ -165,7 +156,7 @@ function genPlatforms(scene, level) {
 		plat2.position.y = 2.;
 		platforms.push(plat2);
 
-		geometry = new THREE.BoxGeometry( 1.,400, 1 );
+		geometry = new THREE.BoxGeometry( 1.,300, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
 		var plat3 = new THREE.Mesh(geometry, material);
 		scene.add(plat3);
