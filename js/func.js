@@ -91,7 +91,7 @@ function makeSideBars(scene) {
 }
 
 function genCharacter(scene) {
-	var geometry = new THREE.BoxGeometry( 50, 130, 1 );
+	var geometry = new THREE.BoxGeometry( 80, 130, 1 );
 	var loader = new THREE.TextureLoader();
 	loader.setCrossOrigin("Anonymous");
 	var materials = [

@@ -260,9 +260,20 @@
 				if(collision) lockCharLeft = 0;
 				else lockCharLeft = 1;*/
 
-				darknessFilter[0].position.x = character.position.x;
+				if(!lightType && (idleL || walkRight))
+					darknessFilter[0].position.x = character.position.x-30;
+				else if(!lightType && (idleR || walkLeft))
+					darknessFilter[0].position.x = character.position.x+30;
+				else
+					darknessFilter[0].position.x = character.position.x;
 				darknessFilter[0].position.y = character.position.y+40;
-				darknessFilter[1].position.x = character.position.x;
+
+				if(!lightType && (idleL || walkRight))
+					darknessFilter[1].position.x = character.position.x-30;
+				else if(!lightType && (idleR || walkLeft))
+					darknessFilter[1].position.x = character.position.x+30;
+				else
+					darknessFilter[1].position.x = character.position.x;
 				darknessFilter[1].position.y = character.position.y+40;
 				// console.log(torchDirection);
 
