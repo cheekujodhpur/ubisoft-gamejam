@@ -1,4 +1,5 @@
 function genBackground(scene, level) {
+
 	if(level==1) {
 		var geometry = new THREE.BoxGeometry( width, height, 1 );
 
@@ -43,6 +44,7 @@ function genBackground(scene, level) {
 		cube.position.z = 51;
 	}
 	if(level==2) {
+		console.log("hereddd");
 		var geometry = new THREE.BoxGeometry( width, height, 1 );
 
 		var loader = new THREE.TextureLoader();
@@ -89,9 +91,8 @@ function genBackground(scene, level) {
 
 function genPlatforms(scene, level) {
 	var geometry, material;
-
 	platforms = [];
-	if(level==1){
+	if(level==1 || level == 2 ){
 
 		
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0 } );
@@ -104,30 +105,31 @@ function genPlatforms(scene, level) {
 		plat6.position.y = 145;
 		platforms.push(plat6);
 
-		geometry = new THREE.BoxGeometry( 280.,4., 1 );
-		var plat7 = new THREE.Mesh(geometry, material);
-		scene.add(plat7);
-		plat7.position.z = 45;
-		plat7.position.x = 270.;
-		plat7.position.y = 150;
-		platforms.push(plat7);
+		if(level != 2){
+			geometry = new THREE.BoxGeometry( 280.,4., 1 );
+			var plat7 = new THREE.Mesh(geometry, material);
+			scene.add(plat7);
+			plat7.position.z = 45;
+			plat7.position.x = 270.;
+			plat7.position.y = 150;
+			platforms.push(plat7);
 
-		geometry = new THREE.BoxGeometry( 70.,4., 1 );
-		var plat8 = new THREE.Mesh(geometry, material);
-		scene.add(plat8);
-		plat8.position.z = 45;
-		plat8.position.x = 245.;
-		plat8.position.y = 35;
-		platforms.push(plat8);
+			geometry = new THREE.BoxGeometry( 70.,4., 1 );
+			var plat8 = new THREE.Mesh(geometry, material);
+			scene.add(plat8);
+			plat8.position.z = 45;
+			plat8.position.x = 245.;
+			plat8.position.y = 35;
+			platforms.push(plat8);
 
-		geometry = new THREE.BoxGeometry( 40.,4., 1 );
-		var plat9 = new THREE.Mesh(geometry, material);
-		scene.add(plat9);
-		plat9.position.z = 45;
-		plat9.position.x = 320.;
-		plat9.position.y = -100;
-		platforms.push(plat9);
-
+			geometry = new THREE.BoxGeometry( 40.,4., 1 );
+			var plat9 = new THREE.Mesh(geometry, material);
+			scene.add(plat9);
+			plat9.position.z = 45;
+			plat9.position.x = 320.;
+			plat9.position.y = -100;
+			platforms.push(plat9);
+		}
 
 		geometry = new THREE.BoxGeometry( 130.,4., 1 );
 		var plat10 = new THREE.Mesh(geometry, material);
@@ -145,24 +147,26 @@ function genPlatforms(scene, level) {
 		plat11.position.y = -60;
 		platforms.push(plat11);
 
+		if(level !=2){
+			geometry = new THREE.BoxGeometry( 8.,300, 1 );
+			material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0 } );
+			var plat2 = new THREE.Mesh(geometry, material);
+			scene.add(plat2);
+			plat2.position.z = 45;
+			plat2.position.x = 345;
+			plat2.position.y = 2.;
+			platforms.push(plat2);
 
-		geometry = new THREE.BoxGeometry( 8.,300, 1 );
-		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0 } );
-		var plat2 = new THREE.Mesh(geometry, material);
-		scene.add(plat2);
-		plat2.position.z = 45;
-		plat2.position.x = 345;
-		plat2.position.y = 2.;
-		platforms.push(plat2);
+			geometry = new THREE.BoxGeometry( 1.,300, 1 );
+			material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
+			var plat3 = new THREE.Mesh(geometry, material);
+			scene.add(plat3);
+			plat3.position.z = 45;
+			plat3.position.x = 106;
+			plat3.position.y = 2.;
+			platforms.push(plat3);
+		}
 
-		geometry = new THREE.BoxGeometry( 1.,300, 1 );
-		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.5} );
-		var plat3 = new THREE.Mesh(geometry, material);
-		scene.add(plat3);
-		plat3.position.z = 45;
-		plat3.position.x = 106;
-		plat3.position.y = 2.;
-		platforms.push(plat3);
 
 		geometry = new THREE.BoxGeometry( 1.,400, 1 );
 		material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent:true, opacity:0.0} );
@@ -183,6 +187,7 @@ function genPlatforms(scene, level) {
 		platforms.push(plat5);
 
 	}
+
 	return platforms;
 }
 
@@ -344,15 +349,17 @@ function onSurface(character, water){
 
 function onPlatform(character, platforms){
 
+	var trialCharacter = character.clone();
+	trialCharacter.position.y -= 1e-3;
 	for(var i = 0;i<platforms.length;i++){
 		var firstBB = new THREE.Box3().setFromObject(platforms[i]);
-		var	secondBB = new THREE.Box3().setFromObject(character);
+		var	secondBB = new THREE.Box3().setFromObject(trialCharacter);
 
 		var collision = firstBB.intersectsBox(secondBB);
 		// console.log(firstBB);
 
-		var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+		/*var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+		var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;*/
 
 		if(collision) return collision;
 	}	
@@ -443,35 +450,81 @@ function genDarknessFilter(scene, torch) {
 }
 
 function move(character, collidableMeshList, step, direction, flag = 0) {
+	var myStep = step;
+	var character_clone = character.clone();
+	// console.log(character_clone);
+	var i;
+	if(Math.abs(step)<1e-4)return;
+
 	if(!flag){
-		for(var i = 0;i<collidableMeshList.length;i++){
-			var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
-			var	secondBB = new THREE.Box3().setFromObject(character);
+			
+			if(direction%2)
+				character_clone.position.y = character.position.y + myStep;
+			else
+				character_clone.position.x = character.position.x + myStep;
 
-			var collision = firstBB.intersectsBox(secondBB);
-			// console.log(firstBB);
+			for(i = 0;i<collidableMeshList.length;i++){
+				var firstBB = new THREE.Box3().setFromObject(collidableMeshList[i]);
+				var	secondBB = new THREE.Box3().setFromObject(character_clone);
 
-			var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-			var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+				var dy = Math.abs(character.position.y - collidableMeshList[i].position.y);
+				var dx = Math.abs(character.position.x - collidableMeshList[i].position.x);
 
-			if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
-				return;
+				var dy2 = Math.abs(character_clone.position.y - collidableMeshList[i].position.y);
+				var dx2 = Math.abs(character_clone.position.x - collidableMeshList[i].position.x);
+				var collision = firstBB.intersectsBox(secondBB);
+
+				if(collision){
+					/*if(direction%2){
+						if(dx2 < dx){
+							myStep = myStep/2.;
+							break;
+						}
+					}
+					else{
+						if(dy2 < dy){
+							myStep = myStep/2.;
+							break;
+						}
+					}*/
+					break;
+				}
+				//console.log(myStep);
+				//console.log(character.position.x + "," + character_clone.position.x);
+				/*// console.log(firstBB);
+
+				var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
+				var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
+
+				if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
+					return;
+				}
+				if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
+					return;
+				}
+				if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
+					return;
+				}
+				if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
+					return;
+				}*/
 			}
-			if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
-				return;
+			if(i==collidableMeshList.length){
+				//console.log(character_clone.position.x);
+				character.position.x = character_clone.position.x;
+				character.position.y = character_clone.position.y;
 			}
-			if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
-				return;
+			else{
+				move(character, collidableMeshList, step/2., direction);
 			}
-			if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
-				return;
-			}
-		}	
+		
 	}
-	if(direction%2)
-		character.position.y += step;
-	else
-		character.position.x += step;
+	else{
+		if(direction%2)
+			character.position.y += step;
+		else
+			character.position.x += step;
+	}
 	
 }
 
