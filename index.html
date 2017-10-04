@@ -40,7 +40,8 @@
 			renderer.setClearColor(0xffffff, 1.0);
 			document.body.appendChild( renderer.domElement );
 
-			genBackground(scene, currentLevel);
+			genBackground(scene, 1);
+			var key = genKey(scene)
 
 			collidableMeshList = [];
 			// Making bars
@@ -285,6 +286,8 @@
 				
 				if(collision) lockCharLeft = 0;
 				else lockCharLeft = 1;*/
+
+				if(hasKey()){ alert("HAS KEY");}
 
 				if(!lightType && (idleL || walkRight))
 					darknessFilter[0].position.x = character.position.x-30;
