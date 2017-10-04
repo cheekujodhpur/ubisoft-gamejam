@@ -258,7 +258,7 @@ function genFloor(scene) {
 	scene.add( cube );
 	cube.position.z = 50;
 	cube.position.x = 0;
-	cube.position.y = height / -2.;
+	cube.position.y = height / -2 + 100.;
 
 	return cube;
 }
