@@ -213,7 +213,7 @@
 				percentOxy = document.getElementById("oxyBar").style.width;
 				oxy = document.getElementById("oxyBar").getAttribute('data-value');
 				if(!isInWater && oxy<100) {
-					oxy += 40;
+					(oxy + 10) > 100 ? oxy = 100 : oxy += 10;
 					percentOxy = oxy+'%';
 					document.getElementById("oxyBar").style.width = percentOxy;
 					document.getElementById("oxyBar").setAttribute('data-value',oxy)
