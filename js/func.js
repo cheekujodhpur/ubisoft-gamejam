@@ -465,7 +465,6 @@ function genDarknessFilter(scene, torch) {
 function move(character, collidableMeshList, step, direction, flag = 0) {
 	var myStep = step;
 	var character_clone = character.clone();
-	// console.log(character_clone);
 	var i;
 	if(Math.abs(step)<1e-4)return;
 
@@ -488,39 +487,8 @@ function move(character, collidableMeshList, step, direction, flag = 0) {
 				var collision = firstBB.intersectsBox(secondBB);
 
 				if(collision){
-					/*if(direction%2){
-						if(dx2 < dx){
-							myStep = myStep/2.;
-							break;
-						}
-					}
-					else{
-						if(dy2 < dy){
-							myStep = myStep/2.;
-							break;
-						}
-					}*/
 					break;
 				}
-				//console.log(myStep);
-				//console.log(character.position.x + "," + character_clone.position.x);
-				/*// console.log(firstBB);
-
-				var xsign = (firstBB.max.x - secondBB.max.x)*(firstBB.min.x - secondBB.min.x) < 0 ? -1 : 1;
-				var ysign = (firstBB.max.y - secondBB.max.y)*(firstBB.min.y - secondBB.min.y) < 0 ? -1 : 1;
-
-				if((firstBB.getCenter().x - secondBB.getCenter().x)>0 && ysign < 0 && collision && direction==0) {
-					return;
-				}
-				if((firstBB.getCenter().y - secondBB.getCenter().y)>0 && xsign < 0 && collision && direction==1) {
-					return;
-				}
-				if((firstBB.getCenter().x - secondBB.getCenter().x)<0 && ysign < 0 && collision && direction==2) {
-					return;
-				}
-				if((firstBB.getCenter().y - secondBB.getCenter().y)<0 && xsign < 0 && collision && direction==3) {
-					return;
-				}*/
 			}
 			if(i==collidableMeshList.length){
 				//console.log(character_clone.position.x);
